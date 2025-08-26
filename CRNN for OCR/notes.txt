@@ -1,0 +1,88 @@
+ANN disadvantages->
+->computational cost
+->overfitting
+->loss of imp features like spatial arrangement of pixels
+
+CNN->visual cortex
+edges are change in intensity
+
+image+filter->filter map
+
+drawbacks of convolution->
+-> info loss as feature map has smaller size, every step, reduction
+-> border pixels have less weightage
+
+stride: (n+2p-f)/s -> floor operation then +1
+
+why strides?
+->only high level features (higher stride, lower intricacies)
+->less computation time
+
+translational invariance in pooling (location of features is not imp)
+
+enhanced feature only in case of maxpooling as it takes the most dominant feature in the receptive field
+no training required in pooling 
+
+pooling drawback in image segmentation due to translational invariance
+loss of a lot of info
+
+in CNN, number of trainable parameters do not depend on input but on filter size (mxmxp) -> q filters, then
+mxmxpx(q+1) learning parameters (1 bias value each), unlike ANN
+
+data augmentation
+-> to generate data and reduce data acquisition cost
+-> to reduce overfitting by eliminating incorrect feature picking by model
+
+Keras->Sequential():
+->1 input; series of linear (attached to each other) layers; 1 output
+
+Functional() api-> multiple input; multiple output; shared layers;
+
+why ANN can't be used for NLP?
+-> text input is varying in size
+-> zero padding: unnecessary computation
+-> prediction problem for large text
+-> totally disregarding sequential info
+
+RNN vs ANN
+-> data sent at timesteps, not at once
+input shape is (timesteps, input_size) 
+ANN cannot handle sequential (textual or timeseries based data) data where chronology matters.
+
+Embedding layer converts word indices to dense vectors that are fed into the RNN
+
+Types:
+->many to one: sequential data to non-sequence(int/numbers: scalars like (1/0) or reviews (0-5))
+->one to many: single non-sequential input but multiple outputs at different time-steps(image to text captioning or music generation)
+->many to many: sequence to sequence
+types: 
+->same length(parts of speech tagging)
+->variable length(machine translation/google translate)
+->one to one: no recurrence, simple NN(image classification)
+
+Backpropagation in RNN is backpropagation through time. 
+
+Problems in RNN: (overcame by LSTMs) if length of input is long
+-> long term dependency: RNN fails to remember long gone timesteps; low memory capability; vanishing gradients (lie between 0-1 and continuously multiplied due to derivative of tanh)
+-> unstable gradients: if long term dependency becomes so large, it becomes inf (explodes) (due to activation function, learning rate)
+solutions to vanishing gradients:
+->different activation function like ReLU or leaky ReLU
+->better weight initialization
+->LSTM
+solutions to exploding gradients:
+->gradient clipping
+->controlled lr
+->LSTM
+
+LSTM: a long-term memory chain is also maintained
+LTM(cell state) and STM(hidden state) need to communicate as well.
+LSTM architecture has gates:
+Based on current input-
+->forget gate: decides which info to keep in LTM
+->input gate: decides which new info to add in LTM
+->output gate: decides which LTM info to output; also gives STM in intermediate stages (creates STM using LTM).
+
+In summary, you give Ct-1, ht-1 and Xt, then update LTM and create STM, finally give Ct, ht.
+update LTM step: remove and add based on Xt. In total, 3 processing steps (3 gates).
+
+ht and Ct have same dimension.
